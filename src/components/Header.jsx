@@ -36,9 +36,9 @@ function Header() {
     return {
       os: detectOS(),
       browser: detectBrowser(),
-      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      screenResolution: `${window.innerWidth}x${window.innerHeight}`,
       language: navigator.language,
-      cpuCores: navigator.hardwareConcurrency,
+      cpuCores: navigator.hardwareConcurrency || "Unknown",
       userAgent: navigator.userAgent,
     };
   };
@@ -55,10 +55,12 @@ function Header() {
 
   const detectBrowser = () => {
     const userAgent = navigator.userAgent;
-    if (userAgent.includes("Firefox")) return "Firefox";
-    if (userAgent.includes("Edg")) return "Microsoft Edge";
-    if (userAgent.includes("Chrome")) return "Chrome";
-    if (userAgent.includes("Safari")) return "Safari";
+    if (/firefox/i.test(userAgent)) return "Firefox";
+    if (/edg/i.test(userAgent)) return "Microsoft Edge";
+    if (/chrome/i.test(userAgent)) return "Chrome";
+    if (/safari/i.test(userAgent)) return "Safari";
+    if (/android/i.test(userAgent)) return "Android Browser";
+    if (/iphone|ipad|ipod/i.test(userAgent)) return "iOS Browser";
     return "Unknown Browser";
   };
 

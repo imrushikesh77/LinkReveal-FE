@@ -1,7 +1,9 @@
 import { useState } from "react"
-import { AlertTriangle, ExternalLink, CopyIcon } from "lucide-react"
+import { AlertTriangle, ExternalLink, CopyIcon, ExpandIcon, DownloadIcon } from "lucide-react"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function ResultCard({ type, result, screenshotUrl, message }) {
+function ResultCard({ type, shortUrl, result, screenshotUrl, message }) {
   const [imageError, setImageError] = useState(false)
   const [isEnlarged, setIsEnlarged] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(!!screenshotUrl)
@@ -25,31 +27,30 @@ function ResultCard({ type, result, screenshotUrl, message }) {
   return (
     <div className="terminal-window p-4 sm:p-6 rounded-lg">
       <h2 className="text-green-500 font-bold text-sm sm:text-base mb-3 tracking-wider">TRACE_COMPLETE</h2>
-      <p className="text-green-400 text-sm sm:text-base break-all mb-4 flex items-center gap-1">
-        Target URL:{" "}
-        <a
-          href={result || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 underline hover:text-green-300 transition-colors"
-        >
-          {result}
-          <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
-        </a>
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(result)
-              .then(() => alert("URL copied to clipboard!"))
-              .catch(() => alert("Failed to copy URL."));
-          }}
-          className="text-green-400 hover:text-green-300 transition-colors relative group"
-          aria-label="Copy URL"
-        >
-          <CopyIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-          <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-            Copy URL
-          </span>
-        </button>
+      <p className="text-green-400 text-sm sm:text-base break-all mb-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-1">
+        <span className="whitespace-nowrap">Target URL:</span>
+        <div className="flex items-center gap-2">
+          <a
+            href={result || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 underline hover:text-green-300 transition-colors break-all"
+          >
+            {result}
+            <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+          </a>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(result)
+                .then(() => toast.success("URL copied to clipboard!"))
+                .catch(() => toast.error("Failed to copy URL."));
+            }}
+            className="text-green-400 hover:text-green-300 transition-colors p-1 sm:p-0"
+            aria-label="Copy URL"
+          >
+            <CopyIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+          </button>
+        </div>
       </p>
 
       {screenshotUrl && (
@@ -98,6 +99,34 @@ function ResultCard({ type, result, screenshotUrl, message }) {
                 </div>
               </div>
             )}
+
+            {/* Download Button */}
+            {!isImageLoading && !imageError && (
+              <div className="absolute bottom-2 right-2 flex gap-2">
+                <button
+                  onClick={() => setIsEnlarged(true)} // Open enlarged view
+                  className="p-2 bg-black/50 rounded-lg text-green-400 hover:text-green-500 transition-colors"
+                  aria-label="Enlarge"
+                >
+                  <ExpandIcon className="h-4 w-4" /> {/* Replace with your icon */}
+                </button>
+                <button
+                  onClick={() => {
+                    // Trigger download
+                    const link = document.createElement("a");
+                    link.href = screenshotUrl;
+                    link.download = `${shortUrl.replace("://",".").replace("/",".")}-screenshot.png`; // Custom filename
+                    link.click();
+                  }}
+                  className="p-2 bg-black/50 rounded-lg text-green-400 hover:text-green-500 transition-colors"
+                  aria-label="Download"
+                >
+                  <DownloadIcon className="h-4 w-4" /> {/* Replace with your icon */}
+                </button>
+              </div>
+            )}
+
+            {/* Enlarged Modal */}
             {isEnlarged && (
               <div
                 className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
@@ -110,6 +139,20 @@ function ResultCard({ type, result, screenshotUrl, message }) {
                     alt="Target site screenshot"
                     className="w-full h-full object-contain rounded-lg"
                   />
+                  {/* Download Button in Modal */}
+                  <button
+                    onClick={() => {
+                      // Trigger download
+                      const link = document.createElement("a");
+                      link.href = screenshotUrl;
+                      link.download = `screenshot-${Date.now()}.png`; // Custom filename
+                      link.click();
+                    }}
+                    className="absolute bottom-4 right-4 p-2 bg-black/50 rounded-lg text-green-400 hover:text-green-500 transition-colors"
+                    aria-label="Download"
+                  >
+                    <DownloadIcon className="h-6 w-6" /> {/* Replace with your icon */}
+                  </button>
                 </div>
               </div>
             )}

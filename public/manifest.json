@@ -1,0 +1,23 @@
+{
+    "short_name": "LinkReveal",
+    "name": "LinkReveal - URL Unshortener",
+    "description": "A tool to unshorten URLs and reveal the destination.",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#005cad",
+    "background_color": "#111827",
+    "scope": "/",
+    "orientation": "portrait",
+    "shortcuts": [
+      {
+        "name": "Scan URL",
+        "url": "/scan",
+        "description": "Scan a shortened URL."
+      },
+      {
+        "name": "Exit App",
+        "url": "/exit",
+        "description": "Close the application."
+      }
+    ]
+  }

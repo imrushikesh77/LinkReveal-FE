@@ -22,6 +22,7 @@ function UrlForm({ onSubmit, isLoading }) {
         const blob = await response.blob();
         onSubmit({
           isLoading: false,
+          shortUrl: url,
           result: unshortenResult.data.long_url,
           screenshotUrl: URL.createObjectURL(blob) || "",
           error: "",
@@ -30,6 +31,7 @@ function UrlForm({ onSubmit, isLoading }) {
       } else {
         onSubmit({
           isLoading: false,
+          shortUrl: url,
           result: "",
           screenshotUrl: "",
           error: unshortenResult.data.error,
@@ -40,6 +42,7 @@ function UrlForm({ onSubmit, isLoading }) {
       let errorMessage = err.response?.data?.error || "System error: Unable to process request.";
       onSubmit({
         isLoading: false,
+        shortUrl: url,
         result: "",
         screenshotUrl: "",
         error: errorMessage,
@@ -78,7 +81,7 @@ function UrlForm({ onSubmit, isLoading }) {
               onChange={(e) => setUrl(e.target.value)}
               placeholder="Enter shortened URL..."
               disabled={isLoading}
-              className="flex-1 rounded-lg bg-gray-900 text-green-700 placeholder-green-500/70 py-3 px-2 text-sm sm:text-base w-full"
+              className="flex-1 rounded-lg outline-none bg-gray-900 text-green-700 placeholder-green-500/70 py-3 px-2 text-sm sm:text-base w-full"
               aria-label="URL to decode"
             />
           </div>
