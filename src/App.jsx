@@ -11,22 +11,19 @@ import "./index.css"
 function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const [shortUrl, setShortUrl] = useState("")
-  const [result, setResult] = useState("")
+  const [urlData, setUrlData] = useState("")
   const [screenshotUrl, setScreenshotUrl] = useState("")
   const [type, setType] = useState("")
   const [screenshotLoading, setScreenshotLoading] = useState(false)
 
-  const handleSubmit = ({ isLoading, shortUrl, result, screenshotUrl, screenshotLoading, error, type }) => {
+  const handleSubmit = ({ isLoading, urlData, screenshotUrl, screenshotLoading, error, type }) => {
     setIsLoading(isLoading)
-    setResult(result || "")
     setScreenshotUrl(screenshotUrl)
     setError(error || "")
     setType(type || "")
-    setShortUrl(shortUrl || "")
+    setUrlData(urlData || "")
     setScreenshotLoading(screenshotLoading || false)
   }
-
   return (
     <div className="flex flex-col min-h-screen overflow-hidden bg-black text-green-300">
       <MatrixBackground />
@@ -35,16 +32,15 @@ function App() {
       <main className="flex-grow relative z-10 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
         <div className="container mx-auto max-w-full sm:max-w-3xl lg:max-w-4xl space-y-6">
           <UrlForm onSubmit={handleSubmit} isLoading={isLoading} />
-
           {error && !isLoading && (
             <div className="error-message" aria-live="assertive">
-              <ResultCard type={type} message={error} />
+              <ResultCard type={type} message={error} urlData={urlData} />
             </div>
           )}
 
-          {result && !isLoading && !error && (
+          {urlData.long_url && !isLoading && !error && (
             <div className="result-container" aria-live="polite">
-              <ResultCard type={type} shortUrl={shortUrl} result={result} screenshotUrl={screenshotUrl} screenshotLoading={screenshotLoading} />
+              <ResultCard type={type} urlData={urlData} screenshotUrl={screenshotUrl} screenshotLoading={screenshotLoading} />
             </div>
           )}
 

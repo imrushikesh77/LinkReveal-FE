@@ -16,13 +16,12 @@ function UrlForm({ onSubmit, isLoading }) {
     try {
       // Step 1: Unshorten the URL and display it immediately
       const unshortenResult = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/resolve`, { short_url: url });
-
+      const urlData = unshortenResult.data
       if (unshortenResult.data.status === "success") {
         // Immediately update the UI with the long URL
         onSubmit({
           isLoading: false,
-          shortUrl: url,
-          result: unshortenResult.data.long_url,
+          urlData,
           screenshotUrl: "",
           screenshotLoading: true, // New field to indicate screenshot is being fetched
           error: "",
@@ -33,8 +32,14 @@ function UrlForm({ onSubmit, isLoading }) {
         let screenshotUrl = "";
         let screenshotError = "";
         try {
+          if (!urlData.long_url) {
+            throw new Error("No long URL to fetch screenshot.");
+          }
+          if(urlData.isSafe === "false") {
+            throw new Error("URL is unsafe.");
+          }
           const response = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/screenshot?url=${encodeURIComponent(unshortenResult.data.long_url)}`
+            `${import.meta.env.VITE_BACKEND_URL}/screenshot?url=${encodeURIComponent(urlData.long_url)}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch screenshot");
@@ -42,14 +47,13 @@ function UrlForm({ onSubmit, isLoading }) {
           const blob = await response.blob();
           screenshotUrl = URL.createObjectURL(blob);
         } catch (screenshotErr) {
-          screenshotError = "Unable to capture screenshot of the destination page.";
+          screenshotError = screenshotErr+" Unable to capture screenshot of the destination page.";
         }
 
         // Step 3: Update the UI with the screenshot result
         onSubmit({
           isLoading: false,
-          shortUrl: url,
-          result: unshortenResult.data.long_url,
+          urlData,
           screenshotUrl: screenshotUrl || "",
           screenshotLoading: false,
           error: screenshotError || "",
@@ -59,22 +63,20 @@ function UrlForm({ onSubmit, isLoading }) {
         // Unshortening failed
         onSubmit({
           isLoading: false,
-          shortUrl: url,
-          result: "",
+          urlData,
           screenshotUrl: "",
           screenshotLoading: false,
-          error: unshortenResult.data.error || "Failed to unshorten the URL.",
+          error: "Failed to unshorten the URL.",
           type: "error",
         });
       }
       setIsLoadingComplete(true);
     } catch (err) {
       // General system error (e.g., network failure)
-      let errorMessage = err.response?.data?.error || "System error: Unable to process request.";
+      let errorMessage = "System error: Unable to process request.";
       onSubmit({
         isLoading: false,
-        shortUrl: url,
-        result: "",
+        urlData: "",
         screenshotUrl: "",
         screenshotLoading: false,
         error: errorMessage,
