@@ -1,55 +1,88 @@
-import { useState } from "react"
-import { Terminal } from "lucide-react"
-import axios from "axios"
+import { useState } from "react";
+import { Terminal } from "lucide-react";
+import axios from "axios";
 
 function UrlForm({ onSubmit, isLoading }) {
-  const [url, setUrl] = useState("")
+  const [url, setUrl] = useState("");
+  const [isLoadingComplete, setIsLoadingComplete] = useState(true);
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault()
-    if (!url.trim()) return
+    setIsLoadingComplete(false);
+    e.preventDefault();
+    if (!url.trim()) return;
 
-    onSubmit({ isLoading: true })
+    onSubmit({ isLoading: true });
 
     try {
-      const unshortenResult = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/resolve`, { "short_url":url })
+      // Step 1: Unshorten the URL and display it immediately
+      const unshortenResult = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/resolve`, { short_url: url });
 
       if (unshortenResult.data.status === "success") {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/screenshot?url=${encodeURIComponent(unshortenResult.data.long_url)}`);
-        if(!response.ok) {
-          throw new Error("Failed to fetch screenshot");
-        }
-        const blob = await response.blob();
+        // Immediately update the UI with the long URL
         onSubmit({
           isLoading: false,
           shortUrl: url,
           result: unshortenResult.data.long_url,
-          screenshotUrl: URL.createObjectURL(blob) || "",
+          screenshotUrl: "",
+          screenshotLoading: true, // New field to indicate screenshot is being fetched
           error: "",
-          type:"success"
-        })
+          type: "success",
+        });
+
+        // Step 2: Fetch the screenshot asynchronously
+        let screenshotUrl = "";
+        let screenshotError = "";
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/screenshot?url=${encodeURIComponent(unshortenResult.data.long_url)}`
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch screenshot");
+          }
+          const blob = await response.blob();
+          screenshotUrl = URL.createObjectURL(blob);
+        } catch (screenshotErr) {
+          screenshotError = "Unable to capture screenshot of the destination page.";
+        }
+
+        // Step 3: Update the UI with the screenshot result
+        onSubmit({
+          isLoading: false,
+          shortUrl: url,
+          result: unshortenResult.data.long_url,
+          screenshotUrl: screenshotUrl || "",
+          screenshotLoading: false,
+          error: screenshotError || "",
+          type: "success",
+        });
       } else {
+        // Unshortening failed
         onSubmit({
           isLoading: false,
           shortUrl: url,
           result: "",
           screenshotUrl: "",
-          error: unshortenResult.data.error,
-          type:"error"
-        })
+          screenshotLoading: false,
+          error: unshortenResult.data.error || "Failed to unshorten the URL.",
+          type: "error",
+        });
       }
+      setIsLoadingComplete(true);
     } catch (err) {
+      // General system error (e.g., network failure)
       let errorMessage = err.response?.data?.error || "System error: Unable to process request.";
       onSubmit({
         isLoading: false,
         shortUrl: url,
         result: "",
         screenshotUrl: "",
+        screenshotLoading: false,
         error: errorMessage,
-        type:"error"
-      })
+        type: "error",
+      });
+      setIsLoadingComplete(true);
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -88,11 +121,11 @@ function UrlForm({ onSubmit, isLoading }) {
 
           <button
             type="submit"
-            disabled={isLoading || !url.trim()}
+            disabled={!isLoadingComplete || !url.trim()}
             className="bg-green-500 text-black font-bold py-3 px-5 sm:px-6 rounded-lg hover:bg-green-400 transition-colors duration-200 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-2 focus:ring-offset-black"
-            aria-label={isLoading ? "Scanning URL" : "Execute scan"}
+            aria-label={!isLoadingComplete ? "Scanning URL" : "Execute scan"}
           >
-            {isLoading ? (
+            {!isLoadingComplete ? (
               <div className="flex items-center justify-center gap-2">
                 <span>Scanning...</span>
                 <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
@@ -108,8 +141,7 @@ function UrlForm({ onSubmit, isLoading }) {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default UrlForm
-
+export default UrlForm;

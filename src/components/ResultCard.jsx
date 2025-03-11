@@ -1,12 +1,24 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AlertTriangle, ExternalLink, CopyIcon, ExpandIcon, DownloadIcon } from "lucide-react"
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function ResultCard({ type, shortUrl, result, screenshotUrl, message }) {
+function ResultCard({ type, shortUrl, result, screenshotUrl, screenshotLoading, message }) {
   const [imageError, setImageError] = useState(false)
   const [isEnlarged, setIsEnlarged] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState(!!screenshotUrl)
+  const [isImageLoading, setIsImageLoading] = useState(true)
+  useEffect(() => {
+    // Sync isImageLoading with screenshotLoading when it changes
+    if (screenshotLoading) {
+      setIsImageLoading(true);
+    } 
+    if (!screenshotUrl) {
+      setIsImageLoading(true); // No screenshot URL, no loading
+    } else {
+      setIsImageLoading(false); // Screenshot URL exists, no loading
+    }
+    // If screenshotUrl exists and screenshotLoading is false, isImageLoading stays true until img loads
+  }, [screenshotUrl, screenshotLoading]);
   if (type === "error") {
     return (
       <div className="terminal-window border-red-500 p-4 sm:p-6 rounded-lg">
@@ -52,22 +64,23 @@ function ResultCard({ type, shortUrl, result, screenshotUrl, message }) {
           </button>
         </div>
       </p>
-
-      {screenshotUrl && (
+      
+      {(
         <div className="border border-green-800 rounded-lg overflow-hidden bg-gray-900">
           <div className="relative aspect-video w-full">
             {/* Loading State */}
-            {isImageLoading && (
+            {isImageLoading ?  (
               <div className="absolute inset-0 flex items-center justify-center text-green-400 text-sm bg-gray-900">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                   <span>Loading screenshot...</span>
                 </div>
               </div>
-            )}
-
-            {/* Screenshot */}
-            {!imageError ? (
+            )
+            :
+            
+            /* Screenshot */
+            !imageError ? (
               <div
                 className="cursor-pointer"
                 onClick={() => setIsEnlarged(true)} // Open modal on click
@@ -98,7 +111,8 @@ function ResultCard({ type, shortUrl, result, screenshotUrl, message }) {
                   </button>
                 </div>
               </div>
-            )}
+            )
+          }
 
             {/* Download Button */}
             {!isImageLoading && !imageError && (

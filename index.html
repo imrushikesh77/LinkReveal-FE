@@ -1,94 +1,102 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LinkReveal - URL Unshortener | Reveal Shortened Links Instantly</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkReveal: Free URL Unshortener | Reveal Short Links from Bitly, TinyURL & More</title>
     
     <!-- Primary Meta Tags -->
-    <meta name="title" content="LinkReveal - URL Unshortener | Reveal Shortened Links Instantly" />
-    <meta name="description" content="Unshorten URLs effortlessly with LinkReveal. Discover the original links behind shortened URLs in seconds – fast, secure, and reliable. Try it now!" />
-    <meta name="keywords" content="LinkReveal, URL unshortener, unshorten URLs, shorten link resolver, reveal shortened links, online URL tool, link safety" />
-    <meta name="robots" content="index, follow" />
-    <meta name="author" content="LinkReveal Team" />
-    <link rel="canonical" href="https://linkreveal.vercel.app/" />
+    <meta name="title" content="LinkReveal: Free URL Unshortener | Reveal Short Links from Bitly, TinyURL & More">
+    <meta name="description" content="Instantly reveal shortened URLs and check link safety. Unshorten Bitly links, TinyURLs, and track redirects. Prevent phishing attacks by seeing final URL destinations before clicking!">
+    <meta name="keywords" content="URL unshortener, reveal short url, bitly link revealer, tinyurl expander, free url expander, link safety check, phishing protection, show link destination, track url redirects, decode shortened links, hover reveal url, chrome extension url reveal, http reveal link, short url revealer, find final URL, anonymous url expander, malicious url detection, link destination checker, expand shortened URLs, reveal original URL, check shortened links, URL security analyzer, reveal hidden links, URL redirect tracker">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="LinkReveal Team">
+    <link rel="canonical" href="https://linkreveal.vercel.app/">
 
     <!-- Performance and Accessibility -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="theme-color" content="#005cad" /> <!-- Customize based on your design -->
-    <link rel="manifest" href="/manifest.json" /> <!-- Optional: Add if you have a PWA manifest -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#005cad">
+    <link rel="manifest" href="/manifest.json">
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://linkreveal.vercel.app/" />
-    <meta property="og:title" content="LinkReveal - Unshorten URLs Fast & Securely" />
-    <meta property="og:description" content="Reveal the full destination behind shortened URLs with LinkReveal. Quick, safe, and free – unshorten links now!" />
-    <meta property="og:image" content="https://linkreveal.vercel.app/og-image.jpg" />
-    <meta property="og:image:alt" content="LinkReveal URL Unshortener Interface" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:site_name" content="LinkReveal" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://linkreveal.vercel.app/">
+    <meta property="og:title" content="LinkReveal: Reveal Shortened URLs & Check Link Safety Instantly">
+    <meta property="og:description" content="Free tool to unshorten Bitly links, TinyURLs and track redirect paths. Protect against phishing by revealing true URL destinations before clicking!">
+    <meta property="og:image" content="https://linkreveal.vercel.app/link.png">
+    <meta property="og:image:alt" content="LinkReveal URL Unshortener showing expanded link details">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="LinkReveal">
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://linkreveal.vercel.app/" />
-    <meta name="twitter:title" content="LinkReveal - Unshorten URLs Instantly" />
-    <meta name="twitter:description" content="Unveil the original URLs behind shortened links with LinkReveal – fast, secure, and user-friendly!" />
-    <meta name="twitter:image" content="https://linkreveal.vercel.app/og-image.jpg" />
-    <meta name="twitter:image:alt" content="LinkReveal URL Unshortener Tool" />
-    <meta name="twitter:creator" content="@imrushikesh" /> <!-- Add your Twitter handle -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://linkreveal.vercel.app/">
+    <meta name="twitter:title" content="Free URL Unshortener - Reveal Hidden Links & Check Safety">
+    <meta name="twitter:description" content="Instantly expand shortened URLs from Bitly, TinyURL and other services. See final destination, track redirects, and prevent phishing attacks!">
+    <meta name="twitter:image" content="https://linkreveal.vercel.app/link.png">
+    <meta name="twitter:image:alt" content="LinkReveal URL expansion results with safety rating">
+    <meta name="twitter:creator" content="@imrushikesh77">
 
     <!-- SEO Meta Tags -->
-    <meta name="robots" content="index, follow" />
-    <meta name="keywords" content="LinkReveal, URL unshortener, unshorten URLs, shorten link resolver, reveal shortened links, online URL tool, link safety" />
-    <meta name="revisit-after" content="7 days" />
-    <meta name="author" content="LinkReveal Team" />
-    <meta name="generator" content="React" />
-    <meta name="rating" content="general" />
-    <meta name="distribution" content="global" />
-    <meta name="language" content="English" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="LinkReveal" />
-    <meta name="application-name" content="LinkReveal" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-    <meta name="theme-color" content="#ffffff" />
-    
+    <meta name="generator" content="React">
+    <meta name="rating" content="general">
+    <meta name="distribution" content="global">
+    <meta name="language" content="en">
+
     <!-- Favicon and Icons -->
     <link rel="shortcut icon" href="/link.png" type="image/x-icon">
-    <link rel="icon" type="image/svg+xml" href="/link.png" />
-    <link rel="apple-touch-icon" href="/link.png" /> <!-- Optional: Add for Apple devices -->
+    <link rel="icon" type="image/svg+xml" href="/link.png">
+    <link rel="apple-touch-icon" href="/link.png">
 
-    <!-- Structured Data (Enhanced) -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "LinkReveal - URL Unshortener",
+      "@type": "SoftwareApplication",
+      "name": "LinkReveal URL Unshortener",
       "url": "https://linkreveal.vercel.app/",
-      "description": "A fast and secure tool to unshorten URLs and reveal their original destinations.",
+      "applicationCategory": "WebApplication",
+      "operatingSystem": "All",
+      "description": "Free tool to expand shortened URLs from Bitly, TinyURL and other services while checking for phishing attempts",
       "publisher": {
         "@type": "Organization",
         "name": "LinkReveal",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://linkreveal.vercel.app/assets/logo.png"
+          "url": "https://linkreveal.vercel.app/assets/link.png"
         }
       },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://linkreveal.vercel.app/?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
+      "features": [
+        "Real-time URL expansion",
+        "Phishing detection",
+        "Redirect path tracking",
+        "No user registration"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
       }
     }
     </script>
-
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Hidden Content -->
+    <div hidden aria-hidden="true">
+      <h1>URL Unshortener and Link Safety Checker</h1>
+      <h2>Features</h2>
+      <ul>
+        <li>Reveal Bitly links</li>
+        <li>Expand TinyURLs</li>
+        <li>Track URL redirects</li>
+        <li>Detect phishing attempts</li>
+        <li>Show final link destination</li>
+        <li>Free URL expansion service</li>
+      </ul>
+    </div>
   </body>
 </html>

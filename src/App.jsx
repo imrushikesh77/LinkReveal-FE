@@ -15,14 +15,16 @@ function App() {
   const [result, setResult] = useState("")
   const [screenshotUrl, setScreenshotUrl] = useState("")
   const [type, setType] = useState("")
+  const [screenshotLoading, setScreenshotLoading] = useState(false)
 
-  const handleSubmit = ({ isLoading, shortUrl, result, screenshotUrl, error, type }) => {
+  const handleSubmit = ({ isLoading, shortUrl, result, screenshotUrl, screenshotLoading, error, type }) => {
     setIsLoading(isLoading)
     setResult(result || "")
-    setScreenshotUrl(screenshotUrl || "")
+    setScreenshotUrl(screenshotUrl)
     setError(error || "")
     setType(type || "")
     setShortUrl(shortUrl || "")
+    setScreenshotLoading(screenshotLoading || false)
   }
 
   return (
@@ -42,7 +44,7 @@ function App() {
 
           {result && !isLoading && !error && (
             <div className="result-container" aria-live="polite">
-              <ResultCard type={type} shortUrl={shortUrl} result={result} screenshotUrl={screenshotUrl} />
+              <ResultCard type={type} shortUrl={shortUrl} result={result} screenshotUrl={screenshotUrl} screenshotLoading={screenshotLoading} />
             </div>
           )}
 
