@@ -1,6 +1,6 @@
 # 🔗 LinkReveal - Ultimate URL Unshortener
 
-[![GitHub issues](https://img.shields.io/github/issues/yourusername/linkreveal)](https://github.com/yourusername/linkreveal/issues)
+[![GitHub issues](https://img.shields.io/github/issues/imrushikesh77/linkreveal-FE)](https://github.com/imrushikesh77/linkreveal-FE/issues)
 [![React Version](https://img.shields.io/badge/react-18.2.0-blue)](https://react.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
