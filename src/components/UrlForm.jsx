@@ -39,7 +39,7 @@ function UrlForm({ onSubmit, isLoading }) {
             throw new Error("URL is unsafe.");
           }
           const response = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/screenshot?url=${encodeURIComponent(urlData.long_url)}`
+            `${import.meta.env.VITE_BACKEND_URL}/screenshot?long_url=${encodeURIComponent(urlData.long_url)}&short_url=${encodeURIComponent(url)}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch screenshot");

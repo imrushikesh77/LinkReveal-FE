@@ -51,7 +51,7 @@ function ResultCard({ type, urlData, screenshotUrl, screenshotLoading, message }
             href={urlData.long_url || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 underline hover:text-green-300 transition-colors break-all"
+            className="inline-flex items-center gap-1 underline  hover:text-green-300 transition-colors break-all"
           >
             {urlData.long_url}
             <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
