@@ -31,23 +31,30 @@ function UrlForm({ onSubmit, isLoading }) {
         // Step 2: Fetch the screenshot asynchronously
         let screenshotUrl = "";
         let screenshotError = "";
+        let screenshotLoading;
         try {
           if (!urlData.long_url) {
+            screenshotLoading = false;
             throw new Error("No long URL to fetch screenshot.");
           }
           if(urlData.isSafe === "false") {
+            screenshotLoading = false
             throw new Error("URL is unsafe.");
           }
           const response = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/screenshot?long_url=${encodeURIComponent(urlData.long_url)}&short_url=${encodeURIComponent(url)}`
           );
           if (!response.ok) {
+            screenshotLoading = false;
+            console.log("Failed to fetch screenshot", response);
             throw new Error("Failed to fetch screenshot");
           }
           const blob = await response.blob();
           screenshotUrl = URL.createObjectURL(blob);
         } catch (screenshotErr) {
+          screenshotLoading = false;
           screenshotError = screenshotErr+" Unable to capture screenshot of the destination page.";
+          console.log(screenshotError)
         }
 
         // Step 3: Update the UI with the screenshot result
@@ -55,7 +62,7 @@ function UrlForm({ onSubmit, isLoading }) {
           isLoading: false,
           urlData,
           screenshotUrl: screenshotUrl || "",
-          screenshotLoading: false,
+          screenshotLoading: screenshotLoading || false,
           error: screenshotError || "",
           type: "success",
         });

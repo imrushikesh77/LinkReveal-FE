@@ -9,11 +9,10 @@ function ResultCard({ type, urlData, screenshotUrl, screenshotLoading, message }
   const [isImageLoading, setIsImageLoading] = useState(true)
   useEffect(() => {
     // Sync isImageLoading with screenshotLoading when it changes
-    if (screenshotLoading) {
+    if (screenshotLoading || !screenshotUrl) {
       setIsImageLoading(true);
-    } 
-    if (!screenshotUrl) {
-      setIsImageLoading(true); // No screenshot URL, no loading
+    } else if(screenshotLoading === false){
+      setIsImageLoading(false);
     } else {
       setIsImageLoading(false); // Screenshot URL exists, no loading
     }
