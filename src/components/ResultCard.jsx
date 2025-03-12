@@ -21,7 +21,7 @@ function ResultCard({ type, urlData, screenshotUrl, screenshotLoading, message }
       setIsImageLoading(false);
     }
     // If screenshotUrl exists and screenshotLoading is false, isImageLoading stays true until img loads
-  }, [screenshotUrl, screenshotLoading, urlData.isSafe, error]);
+  }, [screenshotUrl, screenshotLoading, urlData.isSafe, message]);
   if (type === "error") {
     return (
       <div className="terminal-window border-red-500 p-4 sm:p-6 rounded-lg">
@@ -90,7 +90,7 @@ function ResultCard({ type, urlData, screenshotUrl, screenshotLoading, message }
         <div className="border border-green-800 rounded-lg overflow-hidden bg-gray-900">
           <div className="relative aspect-video w-full">
             {/* Loading State */}
-            {isImageLoading && !error && urlData.isSafe === "true" ?  (
+            {isImageLoading && message==="" && urlData.isSafe === "true" ?  (
               <div className="absolute inset-0 flex items-center justify-center text-green-400 text-sm bg-gray-900">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
