@@ -128,7 +128,6 @@ function ResultCard({ type, urlData, screenshotUrl, screenshotLoading, message }
                       setIsImageLoading(true);
                     }}
                   >
-                    {urlData.isSafe === "true" ? "Retry" : ""}
                   </button>
                 </div>
               </div>
