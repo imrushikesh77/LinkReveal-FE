@@ -21,7 +21,7 @@ function ResultCard({ type, urlData, screenshotUrl, screenshotLoading, message }
       setIsImageLoading(false);
     }
     // If screenshotUrl exists and screenshotLoading is false, isImageLoading stays true until img loads
-  }, [screenshotUrl, screenshotLoading, urlData.isSafe, message]);
+  }, [screenshotUrl, screenshotLoading, urlData.isSafe]);
   if (type === "error") {
     return (
       <div className="terminal-window border-red-500 p-4 sm:p-6 rounded-lg">
