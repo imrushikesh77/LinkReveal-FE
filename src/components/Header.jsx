@@ -66,7 +66,12 @@ function Header() {
 
   const handleExit = (e) => {
     e.preventDefault();
-    window.close();
+    var isChrome = !!window.chrome;
+    if (isChrome) {
+      window.close();
+    } else {
+      alert("Please use shortcut ctrl/cmd + w to exit.");
+    }
   };
 
   return (
